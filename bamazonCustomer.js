@@ -61,21 +61,21 @@ function whatToBuy() {
             //BETTER WAY TO MAKE SQL QUERIES
             var selectQuery = "SELECT * FROM products WHERE product_name = ?"
            connection.query(selectQuery, [response.itemToBuy], function (err, res) {
-                if (err) throw err
+                if (err) throw err;
                 
                 if (res[0].stock_quantity >= 0 && (res[0].stock_quantity - response.quantity) >= 0) {
                     connection.query("UPDATE products SET stock_quantity = stock_quantity - " + response.quantity + " WHERE stock_quantity > 0 AND product_name = '" + response.itemToBuy + "';", function (err, res) {
                         if (err) throw err
 
                         console.log("Your order for " + response.quantity + " " + response.itemToBuy + "(s) is complete!");
-                        connection.end()
+                        
                     });
                 }
                 else{
                     console.log("Not enough stock!");
                 }
             });
-            connection.end()
 
         });
+        connection.end();
 }
